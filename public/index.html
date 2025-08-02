@@ -15,13 +15,18 @@
             height: 100vh;
             overflow: hidden;
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(45deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background: linear-gradient(45deg, #8E0E00 0%, #1F1C18 100%);
             background-size: 400% 400%;
             animation: gradientShift 8s ease infinite;
             transition: all 0.5s ease;
             color: white;
         }
 
+        body.theme-crimson {
+            background: linear-gradient(45deg, #8E0E00 0%, #1F1C18 100%);
+            color: white;
+        }
+        
         body.theme-default {
             background: linear-gradient(45deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
             color: white;
@@ -34,11 +39,6 @@
         
         body.theme-midnight {
             background: linear-gradient(45deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
-            color: #fff;
-        }
-        
-        body.theme-crimson {
-            background: linear-gradient(45deg, #8E0E00 0%, #1F1C18 100%);
             color: #fff;
         }
 
@@ -250,6 +250,7 @@
             z-index: 100;
             display: flex;
             gap: 10px;
+            flex-direction: row-reverse;
         }
 
         .theme-btn {
@@ -270,6 +271,10 @@
             box-shadow: 0 0 10px rgba(255,255,255,0.8);
         }
 
+        .theme-crimson-btn {
+            background: linear-gradient(45deg, #8E0E00, #1F1C18);
+        }
+
         .theme-default-btn {
             background: linear-gradient(45deg, #667eea, #764ba2, #f093fb);
         }
@@ -280,10 +285,6 @@
 
         .theme-midnight-btn {
             background: linear-gradient(45deg, #0f0c29, #302b63, #24243e);
-        }
-
-        .theme-crimson-btn {
-            background: linear-gradient(45deg, #8E0E00, #1F1C18);
         }
 
         .update-log-btn {
@@ -388,15 +389,15 @@
         }
     </style>
 </head>
-<body class="theme-default">
+<body class="theme-crimson">
     <div class="floating-particles"></div>
     <div class="glow"></div>
 
     <div class="theme-switcher">
-        <div class="theme-btn theme-default-btn active" data-theme="default" title="Default Theme"></div>
+        <div class="theme-btn theme-crimson-btn active" data-theme="crimson" title="Crimson Theme"></div>
+        <div class="theme-btn theme-default-btn" data-theme="default" title="Default Theme"></div>
         <div class="theme-btn theme-dark-btn" data-theme="dark" title="Dark Theme"></div>
         <div class="theme-btn theme-midnight-btn" data-theme="midnight" title="Midnight Theme"></div>
-        <div class="theme-btn theme-crimson-btn" data-theme="crimson" title="Crimson Theme"></div>
     </div>
 
     <button class="update-log-btn">Update Log</button>
@@ -425,7 +426,7 @@
 
             <div class="buttons-container">
                 <button class="btn btn-discord" onclick="alert('Discord Coming Soon')">Discord Soon</button>
-                <button id="aetheris-script" class="btn btn-bookmark">Aetheris Script</button>
+                <a id="aetheris-script" href="#" class="btn btn-bookmark" draggable="true">Aetheris Script</a>
             </div>
         </div>
     </div>
@@ -823,9 +824,14 @@
             createParticles();
 
             const aetherisBtn = document.getElementById('aetheris-script');
+            aetherisBtn.setAttribute('href', aetherisScript);
             aetherisBtn.addEventListener('click', function(e) {
                 e.preventDefault();
                 alert('Drag this button to your bookmarks bar to save it as a bookmarklet');
+            });
+
+            aetherisBtn.addEventListener('dragstart', function(e) {
+                e.dataTransfer.setData('text/plain', aetherisScript);
             });
 
             document.querySelectorAll('.btn').forEach(btn => {
@@ -858,6 +864,12 @@
 
             closeUpdate.addEventListener('click', function() {
                 updateModal.style.display = 'none';
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && updateModal.style.display === 'flex') {
+                    updateModal.style.display = 'none';
+                }
             });
         });
     </script>
