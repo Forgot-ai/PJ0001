@@ -1,44 +1,865 @@
-<!-- Just replace your existing script tag with this upgraded version -->
-<script>
-    // [Previous code remains until DOMContentLoaded]
-    document.addEventListener('DOMContentLoaded', function() {
-        createParticles();
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aetheris Client - The Best</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-        // Enhanced theme switcher with sound (uncomment to enable)
-        const themeButtons = document.querySelectorAll('.theme-btn');
-        themeButtons.forEach(button => {
-            // Add click sound (optional)
-            button.addEventListener('click', function() {
-                // const clickSound = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-ui-click.wav');
-                // clickSound.volume = 0.3;
-                // clickSound.play();
-                
-                themeButtons.forEach(btn => btn.classList.remove('active'));
-                this.classList.add('active');
-                document.body.className = `theme-${this.dataset.theme}`;
+        body, html {
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+            transition: all 0.5s ease;
+            color: white;
+        }
+
+        body.theme-default {
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            color: white;
+        }
+        
+        body.theme-dark {
+            background: linear-gradient(45deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #eee;
+        }
+        
+        body.theme-midnight {
+            background: linear-gradient(45deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            color: #fff;
+        }
+        
+        body.theme-crimson {
+            background: linear-gradient(45deg, #8E0E00 0%, #1F1C18 100%);
+            color: #fff;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            position: relative;
+            padding: 20px;
+        }
+
+        .floating-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .main-content {
+            z-index: 10;
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-weight: 900;
+            color: inherit;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+            margin-bottom: 1rem;
+            animation: pulse 3s ease-in-out infinite;
+            letter-spacing: 0.2em;
+        }
+
+        .brand span {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            line-height: 1.1;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .tagline {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: inherit;
+            opacity: 0.9;
+            margin-bottom: 3rem;
+            animation: fadeInUp 2s ease-out;
+            font-weight: 300;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 2rem;
+            animation: slideInUp 2.5s ease-out;
+            justify-content: center;
+            width: 100%;
+            flex-wrap: wrap;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .btn {
+            padding: 1.2rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            min-width: 200px;
+            text-align: center;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-discord {
+            background: linear-gradient(135deg, #7289da, #5865f2);
+            color: white;
+            box-shadow: 0 8px 25px rgba(114, 137, 218, 0.4);
+        }
+
+        .btn-discord:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(114, 137, 218, 0.6);
+        }
+
+        .btn-bookmark {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            color: white;
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+        }
+
+        .btn-bookmark:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(255, 107, 107, 0.6);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        .glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: rotate 20s linear infinite;
+            z-index: 2;
+        }
+
+        @keyframes rotate {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .theme-switcher {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            display: flex;
+            gap: 10px;
+        }
+
+        .theme-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid white;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .theme-btn.active {
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(255,255,255,0.8);
+        }
+
+        .theme-default-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb);
+        }
+
+        .theme-dark-btn {
+            background: linear-gradient(45deg, #1a1a2e, #16213e, #0f3460);
+        }
+
+        .theme-midnight-btn {
+            background: linear-gradient(45deg, #0f0c29, #302b63, #24243e);
+        }
+
+        .theme-crimson-btn {
+            background: linear-gradient(45deg, #8E0E00, #1F1C18);
+        }
+
+        .update-log-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            background: linear-gradient(135deg, #4e54c8, #8f94fb);
+            color: white;
+            box-shadow: 0 4px 15px rgba(78, 84, 200, 0.3);
+        }
+
+        .update-log-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(78, 84, 200, 0.4);
+        }
+
+        .update-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .update-content {
+            background: #222;
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            max-width: 600px;
+            width: 90%;
+            height: 60vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+
+        .update-content h2 {
+            margin-bottom: 1.5rem;
+            color: #8f94fb;
+            text-align: center;
+        }
+
+        .update-item {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #444;
+        }
+
+        .update-date {
+            font-weight: bold;
+            color: #4e54c8;
+            margin-bottom: 0.5rem;
+        }
+
+        .close-update {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .buttons-container {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .theme-switcher {
+                top: 10px;
+                right: 10px;
+            }
+
+            .theme-btn {
+                width: 25px;
+                height: 25px;
+            }
+        }
+    </style>
+</head>
+<body class="theme-default">
+    <div class="floating-particles"></div>
+    <div class="glow"></div>
+
+    <div class="theme-switcher">
+        <div class="theme-btn theme-default-btn active" data-theme="default" title="Default Theme"></div>
+        <div class="theme-btn theme-dark-btn" data-theme="dark" title="Dark Theme"></div>
+        <div class="theme-btn theme-midnight-btn" data-theme="midnight" title="Midnight Theme"></div>
+        <div class="theme-btn theme-crimson-btn" data-theme="crimson" title="Crimson Theme"></div>
+    </div>
+
+    <button class="update-log-btn">Update Log</button>
+
+    <div class="update-modal">
+        <div class="update-content">
+            <button class="close-update">&times;</button>
+            <h2>Aetheris Client Updates</h2>
+            
+            <div class="update-item">
+                <div class="update-date">August 1, 2025</div>
+                <div class="update-text">
+                    Added theme selection and an update log to the site.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="main-content">
+            <h1 class="brand">
+                <span>Aetheris</span>
+                <span>Client</span>
+            </h1>
+            <p class="tagline">Aetheris - The Best</p>
+
+            <div class="buttons-container">
+                <button class="btn btn-discord" onclick="alert('Discord Coming Soon')">Discord Soon</button>
+                <button id="aetheris-script" class="btn btn-bookmark">Aetheris Script</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const aetherisScript = `javascript:(function(){
+            if(document.getElementById('aetheris-menu')) return;
+
+            let keybind = null, consoleKeybind = null, menuVisible = true, unlocked = false;
+            const originalFetch = window.fetch, originalXHR = window.XMLHttpRequest;
+
+            const m = document.createElement('div');
+            m.id = 'aetheris-menu';
+            m.style.cssText = 'width:250px;height:350px;background:#222;color:#eee;border-radius:10px;position:fixed;top:20px;left:20px;z-index:99999;font-family:Arial,sans-serif;user-select:none;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.5);border:1px solid #444;';
+            document.body.appendChild(m);
+
+            function attachDragListeners() {
+                let dz = document.getElementById('aetheris-dragzone');
+                if(!dz) return;
+
+                let isDrag = false, ox, oy;
+                dz.onmousedown = e => {
+                    isDrag = true;
+                    ox = e.clientX - m.offsetLeft;
+                    oy = e.clientY - m.offsetTop;
+                    e.preventDefault();
+                };
+
+                document.onmousemove = e => {
+                    if(isDrag) {
+                        m.style.left = (e.clientX - ox) + 'px';
+                        m.style.top = (e.clientY - oy) + 'px';
+                    }
+                };
+
+                document.onmouseup = () => isDrag = false;
+            }
+
+            function toggleProxy(enable) {
+                if(enable) {
+                    window.fetch = async function(url, opts) {
+                        try {
+                            const proxyUrl = 'https://cors-anywhere.herokuapp.com/' + url;
+                            return originalFetch(proxyUrl, opts);
+                        } catch(e) {
+                            console.error("[Aetheris] Proxy dead—using fallback.");
+                            return originalFetch(url, opts);
+                        }
+                    };
+
+                    window.XMLHttpRequest = class extends originalXHR {
+                        open(method, url) {
+                            super.open(method, 'https://cors-anywhere.herokuapp.com/' + url);
+                        }
+                    };
+
+                    console.log("[Aetheris] Network unrestricted");
+                } else {
+                    window.fetch = originalFetch;
+                    window.XMLHttpRequest = originalXHR;
+                    console.log("[Aetheris] Restrictions re-applied");
+                }
+            }
+
+            function copyToClipboard(text) {
+                const input = document.createElement('input');
+                input.value = text;
+                document.body.appendChild(input);
+                input.select();
+
+                try {
+                    document.execCommand('copy');
+                    alert('Extension disabler code copied! Make a new book mark and replace the url with the code and use the bookmark in chrome://extensions');
+                } catch(e) {
+                    prompt('Copy this code:', text);
+                }
+
+                document.body.removeChild(input);
+            }
+
+            function createDevConsole() {
+                if(document.getElementById('custom-dev-console')) return;
+
+                const style = document.createElement('style');
+                style.textContent = \`
+                    #custom-dev-console {
+                        position: fixed;
+                        bottom: 20px;
+                        right: 20px;
+                        width: 400px;
+                        height: 220px;
+                        background: #121212;
+                        color: #eee;
+                        font-family: monospace;
+                        font-size: 13px;
+                        border: 1px solid #444;
+                        border-radius: 5px;
+                        box-shadow: 0 0 8px #000;
+                        z-index: 999999;
+                        display: flex;
+                        flex-direction: column;
+                        user-select: none;
+                        resize: none;
+                        overflow: hidden;
+                    }
+                    #custom-dev-console header {
+                        background: #222;
+                        padding: 6px 10px;
+                        cursor: move;
+                        font-weight: bold;
+                        user-select: none;
+                    }
+                    #custom-dev-console #output {
+                        flex: 1;
+                        background: #121212;
+                        padding: 6px;
+                        overflow-y: auto;
+                        white-space: pre-wrap;
+                        border-top: 1px solid #333;
+                        border-bottom: 1px solid #333;
+                    }
+                    #custom-dev-console #input-area {
+                        display: flex;
+                        padding: 6px;
+                        background: #1a1a1a;
+                    }
+                    #custom-dev-console textarea {
+                        flex: 1;
+                        resize: none;
+                        height: 50px;
+                        background: #121212;
+                        border: 1px solid #333;
+                        color: #eee;
+                        padding: 6px;
+                        font-family: monospace;
+                        font-size: 13px;
+                        border-radius: 3px;
+                        outline: none;
+                    }
+                    #custom-dev-console button {
+                        margin-left: 6px;
+                        background: #333;
+                        border: none;
+                        color: #eee;
+                        font-weight: bold;
+                        padding: 6px 10px;
+                        border-radius: 3px;
+                        cursor: pointer;
+                        user-select: none;
+                        transition: background 0.2s ease;
+                    }
+                    #custom-dev-console button:hover {
+                        background: #555;
+                    }
+                \`;
+
+                document.head.appendChild(style);
+
+                const consoleEl = document.createElement('div');
+                consoleEl.id = 'custom-dev-console';
+                consoleEl.innerHTML = \`
+                    <header>
+                        Dev Console 
+                        <span style="float:right;cursor:pointer;" id="close-console">&#10006;</span>
+                    </header>
+                    <div id="output"></div>
+                    <div id="input-area">
+                        <textarea id="console-input" placeholder="Type JavaScript code"></textarea>
+                        <button id="run-btn">Run</button>
+                    </div>
+                \`;
+
+                document.body.appendChild(consoleEl);
+
+                const outputEl = consoleEl.querySelector('#output');
+                const inputEl = consoleEl.querySelector('#console-input');
+                const runBtn = consoleEl.querySelector('#run-btn');
+                const closeBtn = consoleEl.querySelector('#close-console');
+
+                function appendOutput(text, isError) {
+                    const el = document.createElement('div');
+                    el.textContent = text;
+                    el.style.color = isError ? '#f55' : '#afa';
+                    outputEl.appendChild(el);
+                    outputEl.scrollTop = outputEl.scrollHeight;
+                }
+
+                runBtn.onclick = function() {
+                    const code = inputEl.value.trim();
+                    if(!code) return;
+
+                    try {
+                        let result = eval(code);
+                        if(result instanceof Promise) {
+                            appendOutput('Promise pending...');
+                            result.then(function(res) {
+                                appendOutput('Promise resolved: ' + res);
+                            }).catch(function(err) {
+                                appendOutput('Promise rejected: ' + err, true);
+                            });
+                        } else {
+                            appendOutput(String(result));
+                        }
+                    } catch(e) {
+                        appendOutput(e.message || e, true);
+                    }
+
+                    inputEl.value = '';
+                };
+
+                inputEl.addEventListener('keydown', function(e) {
+                    if(e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        runBtn.click();
+                    }
+                });
+
+                closeBtn.onclick = function() {
+                    document.body.removeChild(consoleEl);
+                    document.head.removeChild(style);
+                };
+
+                const header = consoleEl.querySelector('header');
+                let dragging = false, offsetX = 0, offsetY = 0;
+
+                header.addEventListener('mousedown', function(e) {
+                    dragging = true;
+                    offsetX = e.clientX - consoleEl.offsetLeft;
+                    offsetY = e.clientY - consoleEl.offsetTop;
+                    document.body.style.userSelect = 'none';
+                });
+
+                window.addEventListener('mouseup', function() {
+                    dragging = false;
+                    document.body.style.userSelect = '';
+                });
+
+                window.addEventListener('mousemove', function(e) {
+                    if(dragging) {
+                        let left = e.clientX - offsetX;
+                        let top = e.clientY - offsetY;
+
+                        left = Math.max(0, Math.min(window.innerWidth - consoleEl.offsetWidth, left));
+                        top = Math.max(0, Math.min(window.innerHeight - consoleEl.offsetHeight, top));
+
+                        consoleEl.style.left = left + 'px';
+                        consoleEl.style.top = top + 'px';
+                        consoleEl.style.right = 'auto';
+                        consoleEl.style.bottom = 'auto';
+                    }
+                });
+            }
+
+            function toggleDevConsole() {
+                const console = document.getElementById('custom-dev-console');
+                if(!console) {
+                    createDevConsole();
+                    return;
+                }
+                console.style.display = console.style.display === 'none' ? 'block' : 'none';
+            }
+
+            function resetAll() {
+                const console = document.getElementById('custom-dev-console');
+                if(console) {
+                    document.body.removeChild(console);
+                    const style = document.querySelector('style[data-custom-console]');
+                    if(style) document.head.removeChild(style);
+                }
+
+                keybind = null;
+                consoleKeybind = null;
+                menuVisible = true;
+                m.style.display = 'block';
+                mainPage();
+            }
+
+            function mainPage() {
+                m.innerHTML = \`
+                    <div id="aetheris-dragzone" style="height:40px;cursor:move;border-top-left-radius:10px;border-top-right-radius:10px;background:#555;display:flex;align-items:center;justify-content:center;">
+                        <div style="font-size:20px;font-weight:bold;color:#eee;user-select:none;">Aetheris Client</div>
+                    </div>
+                    <div id="aetheris-content" style="padding:25px 20px 0 20px;font-size:18px;display:flex;flex-direction:column;gap:15px;">
+                        <div style="display:flex;justify-content:flex-start;align-items:center;gap:10px;color:#eee;font-weight:600;">
+                            <span id="aetheris-label" style="flex-grow:1;">Site Unblocker</span>
+                            <svg id="aetheris-lock" xmlns="http://www.w3.org/2000/svg" height="40" width="40" viewBox="0 0 48 48" style="cursor:pointer;fill:\${unlocked ? '#0f0' : '#f00'};transition:fill 0.3s ease;">
+                                <path d="M12 20v-5.6q0-2.75 1.925-4.675Q15.85 7.8 18.6 7.8t4.675 1.925Q25.2 11.65 25.2 14.4V20h1.6q.7 0 1.175.475.475.475.475 1.175v13.8q0 .7-.475 1.175-.475.475-1.175.475H11.2q-.7 0-1.175-.475Q9.55 36.35 9.55 35.65V21.65q0-.7.475-1.175Q10.5 20 11.2 20Zm3.2 0h9.6v-5.6q0-1.975-1.4-3.375T18.6 9.625q-1.975 0-3.375 1.4T13.2 14.4Zm4.8 8.55q.55 0 .925-.375t.375-.925q0-.55-.375-.925T18 26.45q-.55 0-.925.375t-.375.925q0 .55.375.925t.925.375Z"/>
+                            </svg>
+                        </div>
+                        <div style="display:flex;justify-content:flex-start;align-items:center;gap:10px;color:#eee;font-weight:600;">
+                            <span style="flex-grow:1;">Extension Disabler</span>
+                            <button id="aetheris-copy-disabler" style="background:#d33;color:white;border:none;border-radius:5px;padding:5px 10px;cursor:pointer;font-weight:bold;">Copy Code</button>
+                        </div>
+                        <div style="display:flex;justify-content:flex-start;align-items:center;gap:10px;color:#eee;font-weight:600;">
+                            <span style="flex-grow:1;">Dev Console</span>
+                            <button id="aetheris-run-console" style="background:#07d;color:white;border:none;border-radius:5px;padding:5px 10px;cursor:pointer;font-weight:bold;">Run</button>
+                        </div>
+                    </div>
+                    <div id="aetheris-footer" style="position:absolute;bottom:0;left:0;width:100%;padding:15px 0;text-align:center;background:#444;color:white;font-weight:bold;border-bottom-left-radius:10px;border-bottom-right-radius:10px;cursor:pointer;">Settings</div>
+                \`;
+
+                attachDragListeners();
+
+                document.getElementById('aetheris-lock').onclick = function() {
+                    unlocked = !unlocked;
+                    toggleProxy(unlocked);
+                    mainPage();
+                };
+
+                document.getElementById('aetheris-copy-disabler').onclick = function() {
+                    copyToClipboard('javascript:(function(){var toggles=document.querySelectorAll(\\'extensions-manager\\').shadowRoot.querySelectorAll(\\'extensions-item\\').shadowRoot.querySelectorAll(\\'.enable-toggle\\');toggles.forEach(function(t){t.disabled=false});})();');
+                };
+
+                document.getElementById('aetheris-run-console').onclick = toggleDevConsole;
+                document.getElementById('aetheris-footer').onclick = settingsPage;
+            }
+
+            function settingsPage() {
+                m.innerHTML = \`
+                    <div id="aetheris-dragzone" style="height:40px;cursor:move;border-top-left-radius:10px;border-top-right-radius:10px;background:#555;display:flex;align-items:center;justify-content:center;">
+                        <div style="font-size:20px;font-weight:bold;color:#eee;user-select:none;">Aetheris Client</div>
+                    </div>
+                    <div id="aetheris-content" style="padding:25px 20px 0 20px;font-size:18px;display:flex;flex-direction:column;gap:15px;">
+                        <div style="display:flex;justify-content:center;align-items:center;color:#eee;font-weight:600;cursor:pointer;">
+                            <span id="aetheris-label">Set Keybind</span>
+                        </div>
+                        <div style="display:flex;justify-content:center;align-items:center;color:#eee;font-weight:600;cursor:pointer;">
+                            <span id="aetheris-console-keybind">Console Keybind</span>
+                        </div>
+                    </div>
+                    <button id="reset-all" style="position:absolute;bottom:45px;left:0;width:100%;padding:15px 0;text-align:center;background:#d33;color:white;font-weight:bold;border:none;cursor:pointer;border-radius:0;">Reset All</button>
+                    <div id="aetheris-footer" style="position:absolute;bottom:0;left:0;width:100%;padding:15px 0;text-align:center;background:#444;color:white;font-weight:bold;border-bottom-left-radius:0;border-bottom-right-radius:0;cursor:pointer;">Back</div>
+                \`;
+
+                attachDragListeners();
+
+                document.getElementById('aetheris-label').onclick = function() {
+                    let k = prompt("Enter your keybind (single letter or number):");
+                    if(k && k.length === 1 && /[a-z0-9]/i.test(k)) {
+                        keybind = k.toLowerCase();
+                        alert('Keybind set to "' + keybind.toUpperCase() + '"');
+                    } else {
+                        alert("Invalid Keybind");
+                    }
+                };
+
+                document.getElementById('aetheris-console-keybind').onclick = function() {
+                    let k = prompt("Enter console keybind (single letter or number):");
+                    if(k && k.length === 1 && /[a-z0-9]/i.test(k)) {
+                        consoleKeybind = k.toLowerCase();
+                        alert('Console keybind set to "' + consoleKeybind.toUpperCase() + '"');
+                    } else {
+                        alert("Invalid Keybind");
+                    }
+                };
+
+                document.getElementById('reset-all').onclick = resetAll;
+                document.getElementById('aetheris-footer').onclick = mainPage;
+            }
+
+            mainPage();
+
+            document.addEventListener('keydown', function(e) {
+                if(keybind && e.key.toLowerCase() === keybind) {
+                    menuVisible = !menuVisible;
+                    m.style.display = menuVisible ? 'block' : 'none';
+                }
+
+                if(consoleKeybind && e.key.toLowerCase() === consoleKeybind) {
+                    toggleDevConsole();
+                }
+            });
+        })()`;
+
+        function createParticles() {
+            const particlesContainer = document.querySelector('.floating-particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+
+                const size = Math.random() * 10 + 5;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+
+            const aetherisBtn = document.getElementById('aetheris-script');
+            aetherisBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('Drag this button to your bookmarks bar to save it as a bookmarklet');
+            });
+
+            document.querySelectorAll('.btn').forEach(btn => {
+                btn.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-3px) scale(1.02)';
+                });
+
+                btn.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+
+            const themeButtons = document.querySelectorAll('.theme-btn');
+            themeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    themeButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    const theme = this.getAttribute('data-theme');
+                    document.body.className = `theme-${theme}`;
+                });
+            });
+
+            const updateBtn = document.querySelector('.update-log-btn');
+            const updateModal = document.querySelector('.update-modal');
+            const closeUpdate = document.querySelector('.close-update');
+
+            updateBtn.addEventListener('click', function() {
+                updateModal.style.display = 'flex';
+            });
+
+            closeUpdate.addEventListener('click', function() {
+                updateModal.style.display = 'none';
             });
         });
-
-        // Update log with slide animation
-        const updateModal = document.querySelector('.update-modal');
-        const updateBtn = document.querySelector('.update-log-btn');
-        
-        updateBtn.addEventListener('click', () => {
-            updateModal.style.display = 'flex';
-            updateModal.querySelector('.update-content').style.animation = 'slideUp 0.4s ease';
-        });
-
-        // Close modal on ESC key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && updateModal.style.display === 'flex') {
-                updateModal.style.display = 'none';
-            }
-        });
-
-        // Add this to your CSS:
-        /* @keyframes slideUp {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        } */
-    });
-</script>
+    </script>
+</body>
+</html>
