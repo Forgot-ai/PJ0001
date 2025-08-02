@@ -18,6 +18,28 @@
             background: linear-gradient(45deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
             background-size: 400% 400%;
             animation: gradientShift 8s ease infinite;
+            transition: all 0.5s ease;
+            color: white;
+        }
+
+        body.theme-default {
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            color: white;
+        }
+        
+        body.theme-dark {
+            background: linear-gradient(45deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #eee;
+        }
+        
+        body.theme-midnight {
+            background: linear-gradient(45deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            color: #fff;
+        }
+        
+        body.theme-crimson {
+            background: linear-gradient(45deg, #8E0E00 0%, #1F1C18 100%);
+            color: #fff;
         }
 
         @keyframes gradientShift {
@@ -86,7 +108,7 @@
             flex-direction: column;
             align-items: center;
             font-weight: 900;
-            color: white;
+            color: inherit;
             text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
             margin-bottom: 1rem;
             animation: pulse 3s ease-in-out infinite;
@@ -94,7 +116,7 @@
         }
 
         .brand span {
-            font-size: clamp(2rem, 5vw, 3.5rem); /* Smaller text size */
+            font-size: clamp(2rem, 5vw, 3.5rem);
             line-height: 1.1;
         }
 
@@ -105,7 +127,8 @@
 
         .tagline {
             font-size: clamp(1.2rem, 3vw, 1.8rem);
-            color: rgba(255, 255, 255, 0.9);
+            color: inherit;
+            opacity: 0.9;
             margin-bottom: 3rem;
             animation: fadeInUp 2s ease-out;
             font-weight: 300;
@@ -220,6 +243,127 @@
             to { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
+        .theme-switcher {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            display: flex;
+            gap: 10px;
+        }
+
+        .theme-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid white;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .theme-btn.active {
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(255,255,255,0.8);
+        }
+
+        .theme-default-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb);
+        }
+
+        .theme-dark-btn {
+            background: linear-gradient(45deg, #1a1a2e, #16213e, #0f3460);
+        }
+
+        .theme-midnight-btn {
+            background: linear-gradient(45deg, #0f0c29, #302b63, #24243e);
+        }
+
+        .theme-crimson-btn {
+            background: linear-gradient(45deg, #8E0E00, #1F1C18);
+        }
+
+        .update-log-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            background: linear-gradient(135deg, #4e54c8, #8f94fb);
+            color: white;
+            box-shadow: 0 4px 15px rgba(78, 84, 200, 0.3);
+        }
+
+        .update-log-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(78, 84, 200, 0.4);
+        }
+
+        .update-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .update-content {
+            background: #222;
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            max-width: 600px;
+            width: 90%;
+            height: 60vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+
+        .update-content h2 {
+            margin-bottom: 1.5rem;
+            color: #8f94fb;
+            text-align: center;
+        }
+
+        .update-item {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #444;
+        }
+
+        .update-date {
+            font-weight: bold;
+            color: #4e54c8;
+            margin-bottom: 0.5rem;
+        }
+
+        .close-update {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
         @media (max-width: 768px) {
             .buttons-container {
                 flex-direction: column;
@@ -231,12 +375,45 @@
                 width: 100%;
                 max-width: 300px;
             }
+
+            .theme-switcher {
+                top: 10px;
+                right: 10px;
+            }
+
+            .theme-btn {
+                width: 25px;
+                height: 25px;
+            }
         }
     </style>
 </head>
-<body>
+<body class="theme-default">
     <div class="floating-particles"></div>
     <div class="glow"></div>
+
+    <div class="theme-switcher">
+        <div class="theme-btn theme-default-btn active" data-theme="default" title="Default Theme"></div>
+        <div class="theme-btn theme-dark-btn" data-theme="dark" title="Dark Theme"></div>
+        <div class="theme-btn theme-midnight-btn" data-theme="midnight" title="Midnight Theme"></div>
+        <div class="theme-btn theme-crimson-btn" data-theme="crimson" title="Crimson Theme"></div>
+    </div>
+
+    <button class="update-log-btn">Update Log</button>
+
+    <div class="update-modal">
+        <div class="update-content">
+            <button class="close-update">&times;</button>
+            <h2>Aetheris Client Updates</h2>
+            
+            <div class="update-item">
+                <div class="update-date">August 1, 2025</div>
+                <div class="update-text">
+                    Added theme selection and an update log to the site.
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="container">
         <div class="main-content">
@@ -247,15 +424,13 @@
             <p class="tagline">Aetheris - The Best</p>
 
             <div class="buttons-container">
-                <a href="javascript:void(0)" class="btn btn-discord" onclick="alert('Discord Coming Soon')">Discord Soon</a>
-                <a id="aetheris-script" href="#" class="btn btn-bookmark">Aetheris Script</a>
+                <button class="btn btn-discord" onclick="alert('Discord Coming Soon')">Discord Soon</button>
+                <button id="aetheris-script" class="btn btn-bookmark">Aetheris Script</button>
             </div>
         </div>
     </div>
 
     <script>
-        // [Previous JavaScript code remains exactly the same]
-        // Store the bookmarklet code in a variable for cleaner implementation
         const aetherisScript = `javascript:(function(){
             if(document.getElementById('aetheris-menu')) return;
 
@@ -625,10 +800,6 @@
             });
         })()`;
 
-        // funky way of preventing the alert yes
-        const oldAlert = alert;
-        window.alert = () => {};
-
         function createParticles() {
             const particlesContainer = document.querySelector('.floating-particles');
             const particleCount = 50;
@@ -651,12 +822,10 @@
         document.addEventListener('DOMContentLoaded', function() {
             createParticles();
 
-            // Set up the Aetheris Script button
             const aetherisBtn = document.getElementById('aetheris-script');
-            aetherisBtn.setAttribute('href', aetherisScript);
             aetherisBtn.addEventListener('click', function(e) {
                 e.preventDefault();
-                oldAlert('Drag this button to your bookmarks bar to save it as a bookmarklet');
+                alert('Drag this button to your bookmarks bar to save it as a bookmarklet');
             });
 
             document.querySelectorAll('.btn').forEach(btn => {
@@ -668,8 +837,29 @@
                     this.style.transform = 'translateY(0) scale(1)';
                 });
             });
+
+            const themeButtons = document.querySelectorAll('.theme-btn');
+            themeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    themeButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    const theme = this.getAttribute('data-theme');
+                    document.body.className = `theme-${theme}`;
+                });
+            });
+
+            const updateBtn = document.querySelector('.update-log-btn');
+            const updateModal = document.querySelector('.update-modal');
+            const closeUpdate = document.querySelector('.close-update');
+
+            updateBtn.addEventListener('click', function() {
+                updateModal.style.display = 'flex';
+            });
+
+            closeUpdate.addEventListener('click', function() {
+                updateModal.style.display = 'none';
+            });
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96889f3f6ab9311e',t:'MTc1NDA4NTc3MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"96889f3f6ab9311e","version":"2025.7.0","r":1,"token":"65be0bab426e44ba9493d1471fe73f7a","serverTiming":{"name":{"cfExtPri":true,"cfEdge":true,"cfOrigin":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}}}' crossorigin="anonymous"></script>
 </body>
 </html>
