@@ -198,6 +198,28 @@
             box-shadow: 0 12px 35px rgba(255, 107, 107, 0.6);
         }
 
+        .btn-themes {
+            background: linear-gradient(135deg, #6bff8b, #52eea3);
+            color: white;
+            box-shadow: 0 8px 25px rgba(107, 255, 139, 0.4);
+        }
+
+        .btn-themes:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(107, 255, 139, 0.6);
+        }
+
+        .btn-updates {
+            background: linear-gradient(135deg, #ffb86b, #ee9052);
+            color: white;
+            box-shadow: 0 8px 25px rgba(255, 184, 107, 0.4);
+        }
+
+        .btn-updates:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(255, 184, 107, 0.6);
+        }
+
         .btn:active {
             transform: translateY(-1px);
         }
@@ -220,6 +242,169 @@
             to { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
+        /* Update Log Modal */
+        .update-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            background: #222;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: none;
+            overflow: hidden;
+            border: 1px solid #444;
+        }
+
+        .update-modal.active {
+            display: block;
+        }
+
+        .update-header {
+            padding: 15px 20px;
+            background: #333;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #444;
+        }
+
+        .update-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .update-close {
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .update-close:hover {
+            color: #ff6b6b;
+        }
+
+        .update-content {
+            padding: 20px;
+            color: #eee;
+            overflow-y: auto;
+            max-height: calc(80vh - 70px);
+        }
+
+        .update-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #444;
+        }
+
+        .update-date {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .update-text {
+            line-height: 1.5;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+            display: none;
+        }
+
+        .modal-overlay.active {
+            display: block;
+        }
+
+        /* Themes Modal */
+        .themes-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 500px;
+            background: #222;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: none;
+            overflow: hidden;
+            border: 1px solid #444;
+        }
+
+        .themes-modal.active {
+            display: block;
+        }
+
+        .themes-header {
+            padding: 15px 20px;
+            background: #333;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #444;
+        }
+
+        .themes-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .themes-close {
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .themes-close:hover {
+            color: #ff6b6b;
+        }
+
+        .themes-content {
+            padding: 20px;
+            color: #eee;
+        }
+
+        .theme-option {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: #333;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .theme-option:hover {
+            background: #444;
+        }
+
+        .theme-preview {
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            margin-right: 15px;
+            border: 2px solid #555;
+        }
+
+        .theme-name {
+            font-weight: bold;
+        }
+
         @media (max-width: 768px) {
             .buttons-container {
                 flex-direction: column;
@@ -238,6 +423,52 @@
     <div class="floating-particles"></div>
     <div class="glow"></div>
 
+    <!-- Update Log Modal -->
+    <div class="modal-overlay" id="update-overlay"></div>
+    <div class="update-modal" id="update-modal">
+        <div class="update-header">
+            <div class="update-title">Update Log</div>
+            <div class="update-close" id="update-close">&times;</div>
+        </div>
+        <div class="update-content">
+            <div class="update-item">
+                <div class="update-date">No updates yet</div>
+                <div class="update-text">Stay tuned for future updates!</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Themes Modal -->
+    <div class="modal-overlay" id="themes-overlay"></div>
+    <div class="themes-modal" id="themes-modal">
+        <div class="themes-header">
+            <div class="themes-title">Select Theme</div>
+            <div class="themes-close" id="themes-close">&times;</div>
+        </div>
+        <div class="themes-content">
+            <div class="theme-option" data-theme="default">
+                <div class="theme-preview" style="background: linear-gradient(45deg, #667eea 0%, #764ba2 50%, #f093fb 100%);"></div>
+                <div class="theme-name">Default</div>
+            </div>
+            <div class="theme-option" data-theme="dark">
+                <div class="theme-preview" style="background: linear-gradient(45deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);"></div>
+                <div class="theme-name">Dark</div>
+            </div>
+            <div class="theme-option" data-theme="ocean">
+                <div class="theme-preview" style="background: linear-gradient(45deg, #00b4db 0%, #0083b0 50%, #005b8f 100%);"></div>
+                <div class="theme-name">Ocean</div>
+            </div>
+            <div class="theme-option" data-theme="sunset">
+                <div class="theme-preview" style="background: linear-gradient(45deg, #ff7e5f 0%, #feb47b 50%, #ff6b6b 100%);"></div>
+                <div class="theme-name">Sunset</div>
+            </div>
+            <div class="theme-option" data-theme="forest">
+                <div class="theme-preview" style="background: linear-gradient(45deg, #11998e 0%, #38ef7d 50%, #1d976c 100%);"></div>
+                <div class="theme-name">Forest</div>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <div class="main-content">
             <h1 class="brand">
@@ -249,12 +480,13 @@
             <div class="buttons-container">
                 <a href="javascript:void(0)" class="btn btn-discord" onclick="alert('Discord Coming Soon')">Discord Soon</a>
                 <a id="aetheris-script" href="#" class="btn btn-bookmark">Aetheris Script</a>
+                <a href="javascript:void(0)" class="btn btn-themes" id="themes-btn">Themes</a>
+                <a href="javascript:void(0)" class="btn btn-updates" id="updates-btn">Update Log</a>
             </div>
         </div>
     </div>
 
     <script>
-        // [Previous JavaScript code remains exactly the same]
         // Store the bookmarklet code in a variable for cleaner implementation
         const aetherisScript = `javascript:(function(){
             if(document.getElementById('aetheris-menu')) return;
@@ -648,8 +880,61 @@
             }
         }
 
+        // Theme management
+        const themes = {
+            default: 'linear-gradient(45deg, #667eea 0%, #764ba2 50%, #f093fb 100%)',
+            dark: 'linear-gradient(45deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
+            ocean: 'linear-gradient(45deg, #00b4db 0%, #0083b0 50%, #005b8f 100%)',
+            sunset: 'linear-gradient(45deg, #ff7e5f 0%, #feb47b 50%, #ff6b6b 100%)',
+            forest: 'linear-gradient(45deg, #11998e 0%, #38ef7d 50%, #1d976c 100%)'
+        };
+
+        function setTheme(themeName) {
+            const theme = themes[themeName] || themes.default;
+            document.body.style.background = theme;
+            localStorage.setItem('aetheris-theme', themeName);
+        }
+
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('aetheris-theme');
+            if (savedTheme && themes[savedTheme]) {
+                setTheme(savedTheme);
+            }
+        }
+
+        // Modal management
+        function setupModal(modalId, overlayId, openBtnId, closeBtnId) {
+            const modal = document.getElementById(modalId);
+            const overlay = document.getElementById(overlayId);
+            const openBtn = document.getElementById(openBtnId);
+            const closeBtn = document.getElementById(closeBtnId);
+
+            function openModal() {
+                modal.classList.add('active');
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeModal() {
+                modal.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            if (openBtn) openBtn.addEventListener('click', openModal);
+            if (closeBtn) closeBtn.addEventListener('click', closeModal);
+            
+            overlay.addEventListener('click', (e) => {
+                // Only close if clicking directly on overlay (not children)
+                if (e.target === overlay) {
+                    e.stopPropagation();
+                }
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             createParticles();
+            loadTheme();
 
             // Set up the Aetheris Script button
             const aetherisBtn = document.getElementById('aetheris-script');
@@ -657,6 +942,20 @@
             aetherisBtn.addEventListener('click', function(e) {
                 e.preventDefault();
                 oldAlert('Drag this button to your bookmarks bar to save it as a bookmarklet');
+            });
+
+            // Set up modals
+            setupModal('update-modal', 'update-overlay', 'updates-btn', 'update-close');
+            setupModal('themes-modal', 'themes-overlay', 'themes-btn', 'themes-close');
+
+            // Set up theme selection
+            document.querySelectorAll('.theme-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const themeName = this.getAttribute('data-theme');
+                    setTheme(themeName);
+                    document.getElementById('themes-modal').classList.remove('active');
+                    document.getElementById('themes-overlay').classList.remove('active');
+                });
             });
 
             document.querySelectorAll('.btn').forEach(btn => {
@@ -672,5 +971,4 @@
     </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96889f3f6ab9311e',t:'MTc1NDA4NTc3MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"96889f3f6ab9311e","version":"2025.7.0","r":1,"token":"65be0bab426e44ba9493d1471fe73f7a","serverTiming":{"name":{"cfExtPri":true,"cfEdge":true,"cfOrigin":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}}}' crossorigin="anonymous"></script>
 </body>
-
 </html>
