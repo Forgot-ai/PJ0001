@@ -819,8 +819,31 @@
             }
         }
 
+        function setTheme(theme) {
+            // Remove all theme classes
+            document.body.classList.remove('theme-default', 'theme-dark', 'theme-midnight', 'theme-crimson');
+            // Add the selected theme class
+            document.body.classList.add(`theme-${theme}`);
+            // Store the theme in localStorage
+            localStorage.setItem('aetheris-theme', theme);
+            
+            // Update active button
+            document.querySelectorAll('.theme-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if(btn.getAttribute('data-theme') === theme) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             createParticles();
+
+            // Check for saved theme
+            const savedTheme = localStorage.getItem('aetheris-theme');
+            if(savedTheme) {
+                setTheme(savedTheme);
+            }
 
             const aetherisBtn = document.getElementById('aetheris-script');
             aetherisBtn.addEventListener('click', function(e) {
@@ -841,10 +864,8 @@
             const themeButtons = document.querySelectorAll('.theme-btn');
             themeButtons.forEach(button => {
                 button.addEventListener('click', function() {
-                    themeButtons.forEach(btn => btn.classList.remove('active'));
-                    this.classList.add('active');
                     const theme = this.getAttribute('data-theme');
-                    document.body.className = `theme-${theme}`;
+                    setTheme(theme);
                 });
             });
 
